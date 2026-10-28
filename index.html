@@ -4,13 +4,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Redirecting to Callback</title>
+  <title>Opening Callback Service</title>
 </head>
 <body>
-  <p>Redirecting to Callback Service...</p>
+  <p>Opening Callback Service...</p>
 
   <script>
-    (function () {
+    (() => {
       const LOCAL_APP = "xbetmulti://open/callback";
       const GLOBAL_APP = "xbet://open/callback";
       const WEBSITE = "https://1xbet.com/ar/office/support";
@@ -23,41 +23,27 @@
         return;
       }
 
-      let appOpened = false;
-
-      document.addEventListener("visibilitychange", function () {
-        if (document.hidden) appOpened = true;
-      });
-
-      window.addEventListener("pagehide", function () {
-        appOpened = true;
-      });
-
-      // First attempt: local application.
+      // Attempt the local app first.
       window.location.href = LOCAL_APP;
 
-      // Second attempt: global application.
-      setTimeout(function () {
-        if (appOpened || document.hidden) return;
-
+      // If it does not open, attempt the global app.
+      setTimeout(() => {
         window.location.href = GLOBAL_APP;
 
-        // Final fallback: website.
-        setTimeout(function () {
-          if (!appOpened && !document.hidden) {
-            window.location.replace(WEBSITE);
-          }
-        }, 1800);
+        // If neither app opens, use the website.
+        setTimeout(() => {
+          window.location.replace(WEBSITE);
+        }, 2000);
 
-      }, 1800);
+      }, 2000);
     })();
   </script>
 
   <p>
-    If redirection does not work,
-    <a href="xbetmulti://open/callback">Open local app</a> |
-    <a href="xbet://open/callback">Open global app</a> |
-    <a href="https://support-links.info/me_callback">Open website</a>
+    If the redirect does not work:
+    <a href="xbetmulti://open/callback">Local app</a> |
+    <a href="xbet://open/callback">Global app</a> |
+    <a href="https://support-links.info/me_callback">Website</a>
   </p>
 </body>
 </html>
