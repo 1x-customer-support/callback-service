@@ -10,42 +10,39 @@
   <p>Opening Callback Service...</p>
 
   <script>
-    (() => {
-      const LOCAL_APP = "xbetmulti://open/callback";
-      //const GLOBAL_APP = "xbet://open/callback";
-      const GLOBAL_APP = "https://support-links.info/me_callback"; 
-      const WEBSITE = "https://1xbet.com/ar/office/support";
+    const LOCAL_APP = "xbetmulti://open/callback";
+    const GLOBAL_APP = "xbet://open/callback";
+    const WEBSITE = "https://support-links.info/me_callback";
 
-      const isMobile =
-        /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+    let finished = false;
 
-      if (!isMobile) {
-        window.location.replace(WEBSITE);
-        return;
-      }
+    // Stop trying if the browser moves to the app.
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) finished = true;
+    });
 
-      // Attempt the local app first.
-      window.location.href = LOCAL_APP;
+    window.addEventListener("pagehide", () => {
+      finished = true;
+    });
 
-      // If it does not open, attempt the global app.
+    function tryGlobalApp() {
+      if (finished) return;
+
+      location.href = GLOBAL_APP;
+
       setTimeout(() => {
-        window.location.href = GLOBAL_APP;
+        if (!finished && !document.hidden) {
+          finished = true;
+          location.replace(WEBSITE);
+        }
+      }, 1800);
+    }
 
-        // If neither app opens, use the website.
-        setTimeout(() => {
-          window.location.replace(WEBSITE);
-        }, 2000);
+    // Try the local app first.
+    location.href = LOCAL_APP;
 
-      }, 2000);
-    })();
+    // If it doesn't open, try the global app.
+    setTimeout(tryGlobalApp, 1800);
   </script>
-
-  <p>
-    If the redirect does not work:
-    <a href="xbetmulti://open/callback">Local app</a> |
-    <a href="xbet://open/callback">Global app</a> |
-    <a href="https://support-links.info/me_callback">Website</a>
-  </p>
 </body>
 </html>
-
