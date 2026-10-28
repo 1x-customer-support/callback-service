@@ -24,11 +24,11 @@
       }
 
       // Attempt the local app first.
-      window.location.href = LOCAL_APP;
+      window.location.href = GLOBAL_APP;
 
       // If it does not open, attempt the global app.
       setTimeout(() => {
-        window.location.href = GLOBAL_APP;
+        window.location.href = LOCAL_APP;
 
         // If neither app opens, use the website.
         setTimeout(() => {
