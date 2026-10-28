@@ -1,0 +1,64 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Redirecting...</title>
+
+<script>
+(function () {
+
+  const LOCAL_APP = "xbetmulti://open/callback";
+
+  const GLOBAL_URL =
+    "https://support-links.info/me_callback";
+
+  const isMobile =
+    /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+  // Desktop: redirect immediately to global website.
+  if (!isMobile) {
+    window.location.replace(GLOBAL_URL);
+    return;
+  }
+
+  let appOpened = false;
+
+  // Detect whether the browser was moved to background.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) {
+      appOpened = true;
+    }
+  });
+
+  window.addEventListener("pagehide", function () {
+    appOpened = true;
+  });
+
+  // Attempt to open the local application.
+  window.location.href = LOCAL_APP;
+
+  // Fallback to the global link after 1.8 seconds.
+  setTimeout(function () {
+    if (!appOpened && !document.hidden) {
+      window.location.replace(GLOBAL_URL);
+    }
+  }, 1800);
+
+})();
+</script>
+</head>
+
+<body>
+<p>Redirecting to Callback Service...</p>
+
+<p>
+If nothing happens,
+<a href="https://support-links.info/me_callback">
+continue here.
+</a>
+</p>
+</body>
+</html>
